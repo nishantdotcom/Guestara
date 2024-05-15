@@ -2,6 +2,8 @@ import express from "express";
 import v1 from "./router/v1";
 const app = express();
 
+app.use(express.json());
+
 app.get("/", (req, res) => {
   res.status(200).send({
     msg: "hello",

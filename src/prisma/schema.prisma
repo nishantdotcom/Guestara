@@ -34,7 +34,6 @@ datasource db {
   taxNumber Int
   categoryList   category    @relation(fields: [categoryId], references: [id])
   categoryId  Int
-  
   items items[]
 
  }

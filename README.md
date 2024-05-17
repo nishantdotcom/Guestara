@@ -65,55 +65,144 @@ Run Locally
    node ./dist/index.js
 ```
 
-# APIs
+## API Reference
 
-1. Create new Category
-   POST => /v1/category
+#### API to get all categories
 
-2. Get all Category
-   GET => /v1/catgeory
+```http
+  GET /v1/catgeory
+```
 
-3. Get category with id or name
-   GET => /v1/category/search?id=1&name=nishant
+### API to get a category by name or ID along with its attributes
 
-4. Patch (update) data with specific category id
+```http
+  GET v1/category/search?id=1&name=nishant
+```
 
-   PATCH => v1/category/:categoryId
+| Parameter | Type      | Description               |
+| :-------- | :-------- | :------------------------ |
+| `id`      | `integer` | Id of category to fetch   |
+| `name`    | `string`  | name of category to fetch |
 
-5. POST (create ) subcategory under a category
+### API to get all sub-categories
 
-POST =>v1/category/:categoryId/subcategory
+```http
+  GET v1/category/subcategory
+```
 
-6. GET all sub categories
+### API to get all sub categories under a category
 
-GET => v1/category/subcategory
+```http
+  GET /category/subcategory/:catgoryId
 
-7. GET all the subcategory from id or name
+  ex :  /category/subcategory/1
+```
 
-GET =>/v1/subcategory/search?id=1&name=Test123
+### API to get a sub-category by name or ID along with its attributes
 
-8. POST (create) Item of specific subcategory
+```http
+  GET /v1/subcategory/search?id=1&name=Test123
+```
 
-POST=>v1/subcategory/:subcategoryId/item
+| Parameter | Type      | Description               |
+| :-------- | :-------- | :------------------------ |
+| `id`      | `integer` | Id of category to fetch   |
+| `name`    | `string`  | name of category to fetch |
 
-9. Get all items
-   GET=>V1/category/subcategory/item
+### API to get all items
 
-10. GET All item of a subcategory
-    GET =>v1/category/subcategory/:subcategoryId/item
+```http
+  GET v1/category/subcategory/item
+```
 
-11. GET ALL ITEMS SEARCH VIA NAME OR ID
+### API to get all items under a sub-category
 
-GET=>v1/subcategory/item/search
+```http
+ GET  v1/category/subcategory/:subcategoryId/item
+```
 
-12. PATCH (Update) subcategory via subcategory id
+### API to get all items under a category
 
-PATCH =>/subcategory/:subcategoryId
+```http
+Left
+```
 
-13. PATCH(UPDATE) item via item name
+### API to get an item by name or ID along with its attributes
 
-PATCH => /subcategory/item/:itemId
+```http
+ GET v1/subcategory/item/search?id=1&name=nishant
+```
 
-14. POST (API to search the item by its name)
+| Parameter | Type      | Description               |
+| :-------- | :-------- | :------------------------ |
+| `id`      | `integer` | Id of category to fetch   |
+| `name`    | `string`  | name of category to fetch |
 
-POST => /subcategory/item/search&name=itemname
+## CREATE (POST APIs)
+
+### API to create a category
+
+```http
+  POST   /v1/category
+```
+
+| Body   | Type      |
+| :----- | :-------- |
+| `id`   | `integer` |
+| `name` | `string`  |
+
+### API to create Sub-categories will be created under a category
+
+```http
+  POST  v1/category/:categoryId/subcategory
+
+  ex : v1/category/1/subcategory
+```
+
+| Body   | Type      |
+| :----- | :-------- |
+| `id`   | `integer` |
+| `name` | `string`  |
+
+### API to create Item under a sub-category
+
+```htpp
+  POST  v1/subcategory/:subcategoryId/item
+
+  ex: v1/subcategory/1/item
+```
+
+| Body   | Type      |
+| :----- | :-------- |
+| `id`   | `integer` |
+| `name` | `string`  |
+
+## EDIT category
+
+### API to edit category attributes
+
+```http
+    PATCH  v1/category/:categoryId
+```
+
+### API to edit sub category attributes
+
+```http
+    PATCH  v1/subcategory/:subcategoryId
+```
+
+### API to edit item attributes
+
+```http
+    PATCH  v1/subcategory/item/:itemId
+```
+
+### API to search the item by its name
+
+```http
+    GET  /subcategory/item/search&name=itemname
+
+
+
+
+```

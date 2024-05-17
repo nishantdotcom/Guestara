@@ -268,6 +268,7 @@ v1.get("/subcategory/search", async (req, res) => {
     }
   }
 });
+
 //CREATE ITEM FOR AN SUBCATEGORY
 
 v1.post("/subcategory/:subcategoryId/item", async (req, res) => {
@@ -302,13 +303,183 @@ v1.post("/subcategory/:subcategoryId/item", async (req, res) => {
       },
     });
     res.status(200).send({
-      msg: "Getting item",
+      msg: "Creating item",
       status: 1,
       data: itemdata,
     });
   } catch (err) {
     res.status(403).send({
-      msg: "error in getting category !!",
+      msg: "error in creating items !!",
+      status: 0,
+      err: err,
+    });
+  }
+});
+//GET ALL ITEMS
+
+v1.get("/category/subcategory/item", async (req, res) => {
+  try {
+    const getAllItems = await prisma.items.findMany({});
+    res.status(200).send({
+      msg: "Getting item",
+      status: 1,
+      data: getAllItems,
+    });
+  } catch (err) {
+    res.status(403).send({
+      msg: "error in getting items !!",
+      status: 0,
+      err: err,
+    });
+  }
+});
+//GET ALL ITEM WITH SPECIFI SUBCATEGORY
+v1.get("/category/subcategory/:subcategoryId/item", async (req, res) => {
+  const subCategoryId = parseInt(req.params.subcategoryId);
+  try {
+    const getAllItemsofSubCategory = await prisma.items.findMany({
+      where: {
+        subcategoryId: subCategoryId,
+      },
+    });
+    res.status(200).send({
+      msg: "Getting item",
+      status: 1,
+      data: getAllItemsofSubCategory,
+    });
+  } catch (err) {
+    res.status(403).send({
+      msg: "error in getting items of category !!",
+      status: 0,
+      err: err,
+    });
+  }
+});
+// GET ALL ITEM VIA NAME OR ID
+
+v1.get("/subcategory/item/search", async (req, res) => {
+  const id: any = req.query.id;
+  const name: any = req.query.name;
+
+  if (id) {
+    const finalId: number = parseInt(id);
+    try {
+      const categoryProfile = await prisma.items.findUnique({
+        where: {
+          id: finalId,
+        },
+      });
+
+      res.status(200).send({
+        msg: "Getting items",
+        status: 1,
+        data: categoryProfile,
+      });
+    } catch (err) {
+      res.status(403).send({
+        msg: "error in getting items !!",
+        status: 0,
+        err: err,
+      });
+    }
+  } else if (name) {
+    try {
+      const categoryProfile = await prisma.items.findMany({
+        where: {
+          name: name,
+        },
+      });
+
+      res.status(200).send({
+        msg: "Getting items ",
+        status: 1,
+        data: categoryProfile,
+      });
+    } catch (err) {
+      res.status(403).send({
+        msg: "error in getting items !!",
+        status: 0,
+        err: err,
+      });
+    }
+  }
+});
+//EDIT SUBCATEGORY ATTRIBUTE
+
+v1.patch("/subcategory/:subcategoryId", async (req, res) => {
+  const id = parseInt(req.params.subcategoryId);
+  const { name, image, description, taxApplicablity, taxNumber } = req.body;
+  let valid: boolean = true;
+  if (taxApplicablity == 0) {
+    valid = false;
+  }
+  try {
+    const updateProfile = await prisma.category.update({
+      data: {
+        name: name,
+        image: image,
+        description: description,
+        taxApplicability: valid,
+        taxNumber: taxNumber,
+      },
+      where: {
+        id: id,
+      },
+    });
+    res.status(200).send({
+      msg: "Getting category",
+      status: 1,
+      data: updateProfile,
+    });
+  } catch (err) {
+    res.status(403).send({
+      msg: "error in updating sub category !!",
+      status: 0,
+      err: err,
+    });
+  }
+});
+//EDIT ITEMS
+v1.patch("/subcategory/item/:itemId", async (req, res) => {
+  const id = parseInt(req.params.itemId);
+  const {
+    name,
+    image,
+    description,
+    taxApplicablity,
+    taxNumber,
+    baseAmount,
+    discount,
+    totalAmount,
+  } = req.body;
+  let valid: boolean = true;
+  if (taxApplicablity == 0) {
+    valid = false;
+  }
+  try {
+    const updateProfile = await prisma.items.update({
+      data: {
+        name: name,
+        image: image,
+        description: description,
+        taxApplicability: valid,
+        taxNumber: taxNumber,
+        baseAmount: baseAmount,
+        discount: discount,
+        totalAmount: totalAmount,
+      },
+      where: {
+        id: id,
+      },
+    });
+    res.status(200).send({
+      msg: "Getting category",
+      status: 1,
+      data: updateProfile,
+    });
+  } catch (err) {
+    res.status(403).send({
+      msg: "error in updating sub category !!",
       status: 0,
       err: err,
     });

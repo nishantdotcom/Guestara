@@ -486,4 +486,44 @@ v1.patch("/subcategory/item/:itemId", async (req, res) => {
   }
 });
 
+// get item of a category
+v1.get("/:categoryId/item", async (req, res) => {
+  const { categoryId } = req.params;
+  console.log("here");
+  try {
+    const category = await prisma.category.findUnique({
+      where: { id: parseInt(categoryId) },
+      include: {
+        subCategory: {
+          include: {
+            items: true,
+          },
+        },
+      },
+    });
+
+    if (!category) {
+      return res
+        .status(404)
+        .send({ error: "Category not found", status: 0, data: "" });
+    }
+
+    // Extract items from subcategories
+    const items = category.subCategory.flatMap(
+      (subCategory) => subCategory.items
+    );
+
+    res.status(200).send({
+      msg: "found data",
+      status: 1,
+      data: items,
+    });
+  } catch (err) {
+    res.status(403).send({
+      msg: "error in updating sub category !!",
+      status: 0,
+      err: err,
+    });
+  }
+});
 export default v1;

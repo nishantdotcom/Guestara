@@ -146,10 +146,15 @@ Run Locally
   POST   /v1/category
 ```
 
-| Body   | Type      |
-| :----- | :-------- |
-| `id`   | `integer` |
-| `name` | `string`  |
+| Body               | Type      |
+| :----------------- | :-------- |
+| `id`               | `integer` |
+| `name`             | `string`  |
+| `image`            | `string`  |
+| `description`      | `string`  |
+| `taxApplicability` | `boolean` |
+| `taxNumber`        | `integer` |
+| `taxType`          | `string`  |
 
 ### API to create Sub-categories will be created under a category
 
@@ -159,10 +164,15 @@ Run Locally
   ex : v1/category/1/subcategory
 ```
 
-| Body   | Type      |
-| :----- | :-------- |
-| `id`   | `integer` |
-| `name` | `string`  |
+| Body               | Type      |
+| :----------------- | :-------- |
+| `id`               | `integer` |
+| `name`             | `string`  |
+| `image`            | `string`  |
+| `description`      | `string`  |
+| `taxApplicability` | `boolean` |
+| `taxNumber`        | `integer` |
+| `categoryId`       | `integer` |
 
 ### API to create Item under a sub-category
 
@@ -172,10 +182,17 @@ Run Locally
   ex: v1/subcategory/1/item
 ```
 
-| Body   | Type      |
-| :----- | :-------- |
-| `id`   | `integer` |
-| `name` | `string`  |
+| Body               | Type      |
+| :----------------- | :-------- |
+| `id`               | `integer` |
+| `name`             | `string`  |
+| `description`      | `string`  |
+| `taxApplicability` | `boolean` |
+| `taxNumber`        | `integer` |
+| `baseAmount`       | `integer` |
+| `discount`         | `integer` |
+| `totalAmount`      | `integer` |
+| `subcategoryId`    | `integer` |
 
 ## EDIT category
 
@@ -240,7 +257,9 @@ Q4 : What you would have done differently given more time?
 ```bash
 
 1. I would like to index those data to  improve query performance, especially for large datasets.
+
 2. I would like to implement caching strategies for frequently accessed data to reduce database load and improve response times.
+
 3. I try to implement a centralized error handling mechanism in Express to manage different types of errors consistently and provide more informative error messages.
 
 ```
